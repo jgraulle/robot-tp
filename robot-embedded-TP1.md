@@ -5,6 +5,9 @@ Setup
   - from https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads download CP210x_Universal_Windows_Driver.zip
   - Unzip this file, right clic on "silabser.inf" then "Install"
   - Do not forget to follow "epitaGitlabSshKey.pdf" and execute `git clone git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx.git` from a git console
+- For Personal Linux:
+  - VS code installation: (add PPA and install from https://doc.ubuntu-fr.org/visual_studio_code#via_ppa_de_microsoft or manual download from https://code.visualstudio.com/download and install)
+  - To have access to the USB: `echo -e '# CP210X USB UART\nATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE:="0666", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_PORT_IGNORE}="1"' | sudo tee /etc/udev/rules.d/97-cp210x.rules`
 - Run Visual Studio Code
 - In menu "View" option "Extensions", search and install the extension `Espressif IDF`
 - In menu "View" option "Command Palette", type and select `ESP-IDF: Configure ESP-IDF extension`.
@@ -27,7 +30,7 @@ Step 1
 
 Connect a LED to the ESP32 GPIO33 in a breadboard with a resistor like in the following diagram:
 
-![LED ESP32 diagram](ledDiagram.png)
+![LED ESP32 diagram](build/ledDiagram.png)
 
 Step 2
 ------
@@ -113,6 +116,12 @@ Step 2
 ------
 - Open the main.cpp and updated period directly in C++ source
 
+Step 3
+------
+- Create a new personal project on Epita gitlab and make 1 clean commit on a tp1 branch. Do
+not commit generated files (update .gitignore file).
+- Add jeremie.graulle as Maintainer of this project.
+
 Add new hardware component for ADC
 ==================================
 
@@ -122,30 +131,42 @@ Step 1
 Connect the ESP32 GPIO26 (DAC compatible) to the ESP32 GPIO34 (input only ADC compatible) throw a
 resistor in a breadboard like in the following diagram:
 
-![DAC/ADC ESP32 diagram](dacAdcDiagram.png)
-
+![DAC/ADC ESP32 diagram](build/dacAdcDiagram.png)
 
 Step 2
+------
+
+- Download robot-embedded-TP1-dac-adc-header.tar.gz and extract into the project created in previous
+step "First new C++ Project" next to "main.cpp".
+- Create a new C++ body C++ file dac_cxx.cpp for dac_cxx.hpp and add stub (empty body function) for
+each header function to make it compile again (do not forget to add body in CMakeLists.txt)
+- Make 1 clean commit on a tp1 branch
+
+Step 3
 ------
 
 - From official SDK help: https://docs.espressif.com/projects/esp-idf
 - Select the stable version (v5.1.1)
 - Goto "API Reference" and look for DAC
-- Download robot-embedded-TP1-dac-adc-header.tar.gz and extract into the project created in previous
-step "First new C++ Project".
-- Create a new C++ body C++ file dac_cxx.cpp for dac_cxx.hpp and add an example using DAC_2
-(GPIO 26) like other harware C++ class in `jgraulle/esp-idf-cxx:` (include/gptimer_cxx.hpp,
-include/pulse_counter_cxx.hpp)
-- Create a personnal project on epita gitlab to commit your project with this class and the main (do
-not forgot to add a .gitignore file with revelant values) and add jeremie.graulle as viewer of this
-project.
-- Test with a voltmeter your example (do not forget to commit your fix)
+- Update file dac_cxx.cpp and dac_cxx.hpp to have reel implementation. You can have a look in other
+hardware C++ class in `jgraulle/esp-idf-cxx:` (include/gptimer_cxx.hpp,
+include/pulse_counter_cxx.hpp) to have the same behavior (use CHECK_THROW to convert return code
+to exception).
+- Update main to using DAC_2 (GPIO 26) with this class.
+- Test on the breadboard with a voltmeter your code
+- Make 1 clean commit on a tp1 branch
 
-Step 3
+Step 4
 ------
 
 - From official SDK help in "API Reference" and look for ADC
-- In the same project create a new body C++ file adc_cxx.cpp for adc_cxx.hpp and update previous
-example to add ADC1_6 (GPIO34) to read the value set by the DAC in previous example.
-- Test on the breadboard this example
-- Commit the new ADC class and the updated example
+- Update file adc_cxx.cpp and adc_cxx.hpp to have reel implementation.
+- Update main to add ADC1_6 (GPIO34) with this class to read the value set by the DAC and display
+on console
+- Test on the breadboard your code
+- Make 1 clean commit on a tp1 branch
+
+Step 5
+------
+
+- Create a merge request from tp1 branch to main.

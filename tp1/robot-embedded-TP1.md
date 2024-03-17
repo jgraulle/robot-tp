@@ -20,27 +20,20 @@ Setup
 - Clic on `install`
 - Search and install the extension `C/C++ Extension Pack`
 
-First C Project example
-=======================
+1. First C Project example
+==========================
 
 Purpose: To be able to import an ESP-IDF example, build, flash and see debug message.
 
-Step 1
-------
-
-Connect a LED to the ESP32 GPIO33 in a breadboard with a resistor like in the following diagram:
-
-![LED ESP32 diagram](build/ledDiagram.png)
-
-Step 2
-------
+Step 1.1
+--------
 - In menu "View" option "Command Palette", type and select `ESP-IDF: Show Examples Projects`.
 - Select `esp-idf/get-started/blink`
 - Clic on `Create project using example blink`
 - Select your workspace folder then clik on `Open`
 - In menu "View" option "Command Palette", type and select `ESP-IDF: SDK Configuration editor`
 - In `Serial flasher config/Flash size` select `4MB`
-- In `Example Configuration/Blink GPIO number` type `33`
+- In `Example Configuration/Blink GPIO number` type `12`
 - Clic `Save`
 - In menu "View" option "Command Palette", type and select `ESP-IDF: Build your project`
 - In menu "View" option "Command Palette", type and select `ESP-IDF: Select port to use` select
@@ -49,24 +42,24 @@ Step 2
 - In menu "View" option "Command Palette", type and select `ESP-IDF: Monitor your device`
 - Use Ctrl+T then x to exit from monitor (usefull when reboot in loop)
 
-Step 3
-------
+Step 1.2
+--------
 - Update the period by menuconfig
 - Open the main.c and updated period directly in C source
 
-First C++ Project example
-=========================
+2. First C++ Project example
+============================
 
 Purpose: To be able to import an ESP-IDF module example and use C++ instead of C.
 Definition: a ESP-IDF module is an external lib can be easilly add to a ESP-IDF project.
 
-Step 1
-------
+Step 2.1
+--------
 - From console in your workspace, `code . &`
 - In menu "View" option "Command Palette", type and select `ESP-IDF: open ESP-IDF Terminal`
 - execute `idf.py create-project-from-example espressif/esp-idf-cxx=1.0.0-beta:blink_cxx`
 - In menu "File" option "Folder" Select `blink_cxx`
-- In "Explorer" open `main/main.cpp` and update `GPIONum(26)` with `GPIONum(33)`
+- In "Explorer" open `main/main.cpp` and update `GPIONum(26)` with `GPIONum(12)`
 - In "Explorer" open `main/idf_component.yml`:
   - update `version: ^1.0.0` with `version: 1.0.1-beta`
   - add `pre_release: true` just below
@@ -81,18 +74,18 @@ Step 1
 `ESP-IDF: Add vscode configuration folder`
 - Do Flash and Monitor like previous project
 
-Step 2
-------
+Step 2.2
+--------
 - Open the main.cpp and updated period directly in C++ source
 
-First new C++ Project
-=====================
+3. First new C++ Project
+========================
 
 Purpose: To be able to create a new project and import a custom ESP-IDF module dedicated for this
 robot.
 
-Step 1
-------
+Step 3.1
+--------
 - In menu "View" option "Command Palette", type and select `ESP-IDF: new Project`
 - In "Project Name" type `robot-esp-idf`
 - In "Enter Project directory" select your workspace
@@ -105,68 +98,47 @@ Step 1
 - On popup "Project robot-esp-idf has been created. Open project in a new window?" Clic `Yes`
 - From `blink_cxx` copy file `main/idf_component.yml` and `main/main.cpp`
 - in `main/idf_component.yml`:
-  - remplace `espressif/esp-idf-cxx:` by `jgraulle/esp-idf-cxx:`
-  - remplace `version: 1.0.1-beta` by `git: git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx.git`
+  - remplace `espressif/esp-idf-cxx:` by `jgraulle/esp-idf-cxx-tp1:`
+  - remplace `version: 1.0.1-beta` by `git: git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx-tp1.git`
   - remove `pre_release: true`
 - remove `main/main.c` and in `main/CMakeLists.txt` replace `main.c` by `main.cpp`
 - Do the same menuconfig as `blink_cxx`
 - Do Build, Flash and Monitor like previous project
 
-Step 2
-------
+Step 3.2
+--------
 - Open the main.cpp and updated period directly in C++ source
+- Create new project on the Epita gitlab.
+- Commit source file of this project in tp1 branch, warning: Do not commit generated files (update .gitignore file).
 
-Step 3
-------
-- Create a new personal project on Epita gitlab and make 1 clean commit on a tp1 branch. Do
-not commit generated files (update .gitignore file).
-- Add jeremie.graulle as Maintainer of this project.
+4. Add new hardware component for ADC
+=====================================
 
-Add new hardware component for ADC
-==================================
+Step 4.1
+--------
 
-Step 1
-------
-
-Connect the ESP32 GPIO26 (DAC compatible) to the ESP32 GPIO34 (input only ADC compatible) throw a
-resistor in a breadboard like in the following diagram:
-
-![DAC/ADC ESP32 diagram](build/dacAdcDiagram.png)
-
-Step 2
-------
-
-- Download robot-embedded-TP1-dac-adc-header.tar.gz and extract into the project created in previous
+- Download robot-embedded-TP1-adc-header.tar.gz and extract into the project created in previous
 step "First new C++ Project" next to "main.cpp".
-- Create a new C++ body C++ file dac_cxx.cpp for dac_cxx.hpp and add stub (empty body function) for
+- Create a new C++ body C++ file adc_cxx.cpp and add stub (empty body function) for
 each header function to make it compile again (do not forget to add body in CMakeLists.txt)
-- Make 1 clean commit on a tp1 branch
 
-Step 3
-------
+Step 4.2
+--------
 
 - From official SDK help: https://docs.espressif.com/projects/esp-idf
 - Select the stable version (v5.1.1)
-- Goto "API Reference" and look for DAC
-- Update file dac_cxx.cpp and dac_cxx.hpp to have reel implementation. You can have a look in other
-hardware C++ class in `jgraulle/esp-idf-cxx:` (include/gptimer_cxx.hpp,
+- Goto "API Reference" and look for ADC
+- Update file adc_cxx.cpp and adc_cxx.hpp to have reel implementation. You can have a look in other
+hardware C++ class in `jgraulle/esp-idf-cxx-tp1:` (include/gptimer_cxx.hpp,
 include/pulse_counter_cxx.hpp) to have the same behavior (use CHECK_THROW to convert return code
 to exception).
-- Update main to using DAC_2 (GPIO 26) with this class.
-- Test on the breadboard with a voltmeter your code
-- Make 1 clean commit on a tp1 branch
+- Update main to add a new thread, in this thread you will read battery voltage every seconds and
+print it into serial console (use ADC on GPIO 36).
+- Commit your modifications
 
-Step 4
-------
+Step 4.3
+--------
 
-- From official SDK help in "API Reference" and look for ADC
-- Update file adc_cxx.cpp and adc_cxx.hpp to have reel implementation.
-- Update main to add ADC1_6 (GPIO34) with this class to read the value set by the DAC and display
-on console
-- Test on the breadboard your code
-- Make 1 clean commit on a tp1 branch
-
-Step 5
-------
-
+- push all your commit on Epita gitlab.
 - Create a merge request from tp1 branch to main.
+- Add jeremie.graulle as Maintainer of this project.

@@ -5,7 +5,7 @@ Setup
   - from https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads download CP210x_Universal_Windows_Driver.zip
   - Unzip this file, right clic on "silabser.inf" then "Install"
   - Do not forget to follow "epitaGitlabSshKey.pdf" and execute `git clone git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx.git` from a git console
-- For Personal Linux:
+- For Personal Linux (not Epita computer):
   - VS code installation: (add PPA and install from https://doc.ubuntu-fr.org/visual_studio_code#via_ppa_de_microsoft or manual download from https://code.visualstudio.com/download and install)
   - To have access to the USB: `echo -e '# CP210X USB UART\nATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE:="0666", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_PORT_IGNORE}="1"' | sudo tee /etc/udev/rules.d/97-cp210x.rules`
 - Run Visual Studio Code
@@ -108,8 +108,17 @@ Step 3.1
 Step 3.2
 --------
 - Open the main.cpp and updated period directly in C++ source
-- Create new project on the Epita gitlab.
-- Commit source file of this project in tp1 branch, warning: Do not commit generated files (update .gitignore file).
+- Create new personnal private project `ssie-robot-embedded` on the Epita gitlab.
+- Add your two-person team and "jeremie.graulle" as "maintainer"
+- Clone or add remote this project in local
+- Do not commit generated files. Create a .gitignore file and add:
+   - build/
+   - sdkconfig
+   - sdkconfig.old
+   - .vscode
+   - managed_components
+   - dependencies.lock
+- Commit all sources files of this project in main branch.
 
 4. Add new hardware component for ADC
 =====================================
@@ -125,6 +134,7 @@ each header function to make it compile again (do not forget to add body in CMak
 Step 4.2
 --------
 
+- Create a `tp1` branche to commit this step
 - From official SDK help: https://docs.espressif.com/projects/esp-idf
 - Select the stable version (v5.1.1)
 - Goto "API Reference" and look for ADC
@@ -134,11 +144,6 @@ include/pulse_counter_cxx.hpp) to have the same behavior (use CHECK_THROW to con
 to exception).
 - Update main to add a new thread, in this thread you will read battery voltage every seconds and
 print it into serial console (use ADC on GPIO 36).
-- Commit your modifications
-
-Step 4.3
---------
-
-- push all your commit on Epita gitlab.
+- Commit and push your modifications
 - Create a merge request from tp1 branch to main.
-- Add jeremie.graulle as Maintainer of this project.
+- Add jeremie.graulle as reviewer of this MR

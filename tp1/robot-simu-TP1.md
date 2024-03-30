@@ -1,5 +1,8 @@
-Simulateur: TP1
-===============
+Robot - Simu et commande : TP1
+==============================
+
+Installation
+------------
 
 Depuis https://gitlab.cri.epita.fr/jeremie.graulle/ssie-robot-simulator-tp1 créez un "fork"
 personnel privé renommé "ssie-robot-simulator".
@@ -14,6 +17,9 @@ Dans les 2 cas tous les fichiers générés devront être placé dans un sous do
 être ajouté dans le fichier `.gitignore` pour ne pas commiter les fichiers générés.
 
 Attention: Une partie de la note prendra en compte qu'aucun fichier généré n'est commité.
+
+Etapes
+------
 
 Recherchez les "TODO" suivant et suivez les instructions:
 

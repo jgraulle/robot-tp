@@ -18,6 +18,7 @@ Modifiez la branche main de votre projet avec la correction :
   `git remote add teacher git@gitlab.cri.epita.fr:jeremie.graulle/ssie-robot-simulator.git`
 - Allez sur la branche main : `git checkout main`
 - Modifiez la branche main pour être identique à la correction : `git reset --hard teacher/main`
+- Recupérez les branches : `git fetch teacher`
 
 Compilez le simu puis lancez-le, ensuite lancez le robot-command, vous devrez voir le robot du simu
 se déplacer en suivant l'algorithme du robot-command.
@@ -44,7 +45,18 @@ de votre binôme.
 Etape 2
 -------
 
-1. En vous inspirant de la branche `robotKeyboard`, ajoutez une fenêtre SFML pour pouvoir dessiner.
+0. Ajoutez le template suivant autour du code de l'étape 1 (en remplaçant `// Step 1 code` par votre
+  code):
+  ```
+    // #define STEP_1
+    #ifdef STEP_1
+      // Step 1 code
+    #else
+      // Step 2 code
+    #endif
+  ```
+
+1. En vous inspirant de la branche `tp2-motorKeyboard`, ajoutez une fenêtre SFML pour pouvoir dessiner.
 
     Attention :
     - Il ne faudra pas prendre la partie déplacement du robot au clavier ou jostick.

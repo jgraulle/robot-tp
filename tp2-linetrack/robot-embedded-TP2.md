@@ -18,8 +18,8 @@ Attention :
   - Encodeur gauche : GPIO26
   - Interrupteur droit : GPIO21
   - Interrupteur gauche : GPIO32
-  - Moteur droit : GPIO4 et GPIO2 (avec les fils du moteur orientés vers le centre du robot)
-  - Moteur gauche : GPIO12 et GPIO13 (avec les fils du moteur orientés vers le centre du robot)
+  - Moteur droit : GPIO4 et GPIO2, M2 (avec les fils du moteur orientés vers le centre du robot)
+  - Moteur gauche : GPIO12 et GPIO13, M1 (avec les fils du moteur orientés vers le centre du robot)
 
 Vous devrez avoir une branche `tp2` à jour avec le nouveau `esp-idf-cxx` :
 
@@ -33,7 +33,7 @@ Vous devrez avoir une branche `tp2` à jour avec le nouveau `esp-idf-cxx` :
     ```
 - Pour ne pas à avoir à mettre le SSID et le mot de passe dans le dépôt git, vous devrez les ajouter
   en passant par le menu config. Ajoutez le fichier `Kconfig.projbuild` dans le dossier `main` avec
-  le contenu suivant :
+  le contenu suivant (en faisant attention à l'indentation) :
   ```
       menu "Robot ESP IDF Configuration"
 
@@ -56,7 +56,7 @@ Vous devrez avoir une branche `tp2` à jour avec le nouveau `esp-idf-cxx` :
 - Ouvrez VS code et lancez un `menuconfig` (>ESP-IDF: SDK configuration editor (menuconfig) ou icône
   roue crantée) :
   - Remettez les 3 paramètres du premier TP (4MB, C++ exception et C++ RTTI)
-  - Ajoutez les valeurs des paramètres Wifi
+  - Ajoutez les valeurs des paramètres Wifi suivant le mode de connexion (voir partie 3.2)
   - Mettez la valeur `Single factory app(large), no OTA` pour le champ `Partition Table`. Sinon
     vous aurez une erreur de taille de binaire trop grande pour la partition principale.
 - Lancez un build

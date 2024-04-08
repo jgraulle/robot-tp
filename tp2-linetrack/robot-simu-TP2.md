@@ -56,20 +56,40 @@ Etape 2
     #endif
   ```
 
-1. En vous inspirant de la branche `tp2-motorKeyboard`, ajoutez une fenêtre SFML pour pouvoir dessiner.
+1. En vous inspirant de la branche `tp2-motorKeyboard`, en plus de faire le suivi de ligne de
+l'étape 1, ajoutez une fenêtre SFML pour pouvoir dessiner.
 
     Attention :
     - Il ne faudra pas prendre la partie déplacement du robot au clavier ou jostick.
-    - La fonction `sf::Window::display` fait une attente pour atteindre une certaine valeur de FPS et
-    donc la boucle principale du programme, contrairement à l'étape 1, ne devra pas contenir de
-    fonction bloquante (`Robot::waitChanged` ou `sleep`).
+    - La fonction `sf::Window::display` fait une attente pour atteindre une certaine valeur de FPS
+    et donc la boucle principale du programme, contrairement à l'étape 1, ne devra pas contenir de
+    fonction bloquante (`Robot::waitChanged` ou `sleep`). Vous pouvez afficher le nombre de FPS
+    et vous devez avoir la même valeur que sur le simu.
+    - Si vous avez des erreurs de link pensez à vérifier que vous avez bien récupéré toutes les
+    modifications en regardant le dernier commit de la branche `tp2-motorKeyboard`.
 
 2. En vous inspirant du `main.cpp` du simulateur, ajoutez l'affichage d'un carré bleu de 20 pixels
 représentant le robot.
 
 3. Mettez à jour la position de ce rectangle bleu à l'aide des capteurs de roues codeuses en vous
-inspirant des formules utilisées pour mettre à jour la position du robot dans le simu.
+inspirant des formules utilisées pour mettre à jour la position du robot dans le simu :
+- Il faut récupérer les données depuis les capteurs de roue codeuse (en utilisant la fonction
+  `getEncoderWheelValue()` avec comme indice 0 et 1) donnant la distance parcourue de chaque roue
+  en nombre "fente" de la roue codeuse.
+- Vous devrez ensuite convertir ce nombre de pas en pixel en créant des constantes avec la même
+  valeur que dans le simu (vous avez déjà eu besoin de ces valeurs pour le TP1) :
+  - Nombre de "fente" de la roue codeuse par tour
+  - Diamètre de la roue
+- Appliquez une formule très proche de la formule utilisée dans le TP1 pour l'update du robot en
+  créant une constante avec la même valeur que dans le simu (que vous avez également déjà eu besoin
+  pour le TP1) :
+  - Distance entre les 2 roues
 
 4. Utilisez un `sf::VertexArray` avec des primitives de type `sf::Points` pour afficher l'ensemble
-des anciennes positions du robot (limité à 1000 pixels, attention à l'arrondi) permettant d'afficher
-une forme ressemblant à celle dessinée au sol du simulateur.
+  des anciennes positions du robot (limité à 1000 pixels visibles à l'écran, si le robot ne se
+  déplace pas, tous les anciens pixels doivent rester affiché, attention à l'arrondi)
+  permettant d'afficher une forme ressemblant à celle dessinée au sol du simulateur.
+
+    Attention : Il y a une limitation dans la classe `sf::VertexArray` qui fait que l'on ne peut pas
+    coder la solution idéale, mais écrivez un code qui s'en rapproche le plus possible en rajoutant
+    en commentaire ce qui manquerait pour faire la solution idéale.

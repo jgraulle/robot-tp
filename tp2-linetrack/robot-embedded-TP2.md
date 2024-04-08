@@ -70,6 +70,11 @@ Commun
 Pour simplifier la mise au point des paramètres, pour toutes les étapes suivantes, vous devrez
 définir le plus possible de valeur en tant que constante (constexpr) juste en dessous des includes.
 
+Au lieu de mettre tout le code dans le fichier main.cpp, vous pouvez créer autant de fichier
+source qu'il vous semble utile. De plus, si vous voulez créer des classes contenant des objets
+non copiables (copy constructor et operator en delete) pensez que la copie de valeur n'est pas le
+seul moyen de copier un objet en C++.
+
 Etape 1 : Monitoring de la batterie
 -----------------------------------
 
@@ -142,15 +147,21 @@ activer le Wifi pour pouvoir établir une connexion TCP/IP entre l'ESP et votre 
 Etape 4 : Ajout du contrôle des moteurs
 ---------------------------------------
 
-Vous devrez, à l'aide de la fonction `JsonRpcTcpServer::bindNotification` piloter le ou les moteurs
-à la réception d'un message :
+Le but de cette étape est de traiter la réception des messages Json RCP de commande de puissance
+des moteurs. Les messages à traiter sont les suivants :
 
-- `setMotorSpeed` contenant les paramètres :
-    - `motorIndex` : avec comme valeur `LEFT` ou `RIGHT`
+- `setMotorPower` contenant les paramètres :
+    - `motorIndex` : avec comme valeur une string `"LEFT"` ou `"RIGHT"`
     - `value`: avec comme valeur un float entre -1.0 et 1.0
-- `setMotorsSpeed` contenant les paramètres :
+- `setMotorsPower` contenant les paramètres :
     - `leftValue` : avec comme valeur un float entre -1.0 et 1.0
     - `rightValue`: avec comme valeur un float entre -1.0 et 1.0
+
+Il faut utiliser la fonction `bindNotification` de la classe `JsonRpcTcpServer` qui s'utilise un
+peu comme la méthode `bindOnConnectSendNotification` de l'étape 3 avec en argument :
+- Le nom de la méthode du message que vous voulez associer
+- La fonction (qui peut être une lambda) permettant de traiter ce message. Dans cette fonction vous
+devez avoir en paramètre les paramètres du message Json (décrit au début de cette étape).
 
 Attention vous ne pouvez pas modifier la vitesse du moteur directement dans la lamda du
 `bindNotification` car il y a des problèmes de contrainte de temps réel (le module réseau de
@@ -168,6 +179,22 @@ pour le compiler.
 
 Vous devrez le lancer en ajoutant en 1er argument l'IP de l'ESP32 et en 2ème argument le port TCP
 de votre serveur Json RCP.
+
+Si besoin, vous pouvez suivre les étapes suivantes, en testant chaque étape avec le programme
+robot-command :
+
+1. Vous pouvez essayer d'afficher un message en console dans cette fonction mais il me semble
+   que l'ESP 32 redémarre à cause de problèmes de temps réel, vous pouvez donc à la place
+   incrémenter une variable globale, que vous afficherez dans un autre thread.
+2. Vous passerez cette variable globale en variable capturée par la lambda (attention à passer une
+   référence ou un pointeur) et pareil pour la passer dans le thread.
+3. Vous convertirez cette variable en une "idf::Queue" en postant un message de type int depuis la
+   lambda et en le lisant et en l'affichant dans le thread.
+4. Vous changerez le type de message pour contenir suffisamment d'informations pour traiter les
+   commandes `setMotorPower` et `setMotorsPower` avec leurs paramètres (il vaut mieux éviter de
+   copier la partie Json mais plutôt de la convertir) et vous afficherez ces informations dans le
+   thread de réception.
+5. Vous ajouterez en plus de l'affichage l'envoi de la commande aux moteurs.
 
 Etape 5 : Ajout du capteur suiveur de ligne
 -------------------------------------------

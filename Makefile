@@ -3,7 +3,7 @@ BUILDDIR := build
 .PHONY: all
 all : $(BUILDDIR)/robot-git.pdf $(BUILDDIR)/robot-embedded-TP1.pdf $(BUILDDIR)/robot-embedded-TP1-adc-header.tar.gz $(BUILDDIR)/robot-simu-TP1.pdf \
 	$(BUILDDIR)/robot-simu-TP2.pdf $(BUILDDIR)/robot-embedded-TP2.pdf \
-	$(BUILDDIR)/robot-simu-TP3-PID.pdf $(BUILDDIR)/robot-embedded-TP3.pdf $(BUILDDIR)/robot-embedded-TP2-jsonrpctcpserver.tar.gz
+	$(BUILDDIR)/robot-simu-TP3.pdf $(BUILDDIR)/robot-embedded-TP3.pdf $(BUILDDIR)/robot-embedded-TP2-jsonrpctcpserver.tar.gz
 
 $(BUILDDIR)/%.pdf : %.md | $(BUILDDIR)
 	pandoc -V geometry:margin=2cm -o $@ -t latex $<

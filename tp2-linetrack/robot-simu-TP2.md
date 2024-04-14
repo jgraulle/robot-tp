@@ -11,7 +11,7 @@ Ajoutez votre binôme et "jeremie.graulle" en "maintainer".
 
 Clonez ce projet sur votre ordinateur et compilez le.
 
-Modifiez la branche main de votre projet avec la correction :
+Sur le projet simu, modifiez la branche main de votre projet avec la correction :
 
 - Sur votre projet simu ajoutez en remote la correction du tp1
 

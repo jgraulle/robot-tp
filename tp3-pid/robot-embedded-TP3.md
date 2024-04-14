@@ -1,37 +1,88 @@
-Setup
-=====
+Robot - Embarqué : TP3
+======================
 
-Ajout du telemetre ultrason
-===========================
+Installation
+------------
 
-En vous inspirant de l'exemple `esp-idf-cxx/examples/hc_sr04_cxx` vous devrez ajouter le telemetre à ultrason dans votre projet.
-Vous devrez créer un thread dédié à ce capteur effectuant une mesure régulière et dans un premier temps la logant sur le port série (pour la voir sur la sortie monitor).
-Vous devrez modifier la classe HcSr04 :
+Vous devrez créer une branche `tp3` depuis la branche `tp2` ou fusionner la branche `tp2` puis créer
+la branche `tp3` depuis la branche principale (`main`) :
+
+Commun
+------
+
+Comme pour le TP2 :
+
+- Vous devrez définir le plus possible de valeur en tant que constante (`constexpr`)
+juste en dessous des `includes`.
+- Vous pouvez créer autant de fichiers sources et/ou classes que vous jugerez utile.
+- Sur le projet `robot-command`, il y a une branche pour contrôler le robot
+au clavier et visualiser les données renvoyées par les capteurs en utilisant la branche
+`tp3-motorKeyboardAllSensors`. Voir dans dans le `README.md` les instructions pour le compiler.
+
+    ```
+       git clone git@gitlab.cri.epita.fr:jeremie.graulle/ssie-robot-command.git
+       git checkout tp3-motorKeyboardAllSensors
+    ```
+
+
+Etape 1 : Ajout du télémètre ultrason
+-------------------------------------
+
+En vous inspirant de l'exemple `esp-idf-cxx/examples/hc_sr04_cxx` vous devrez ajouter le télémètre
+à ultrason dans votre projet.
+
+Vous devrez créer un thread dédié à ce capteur effectuant une mesure régulière et dans un premier
+temps, la loggant sur le port série (pour la voir sur la sortie `monitor`).
+
+Vous devrez modifier la classe HcSr04 pour :
 
 - Avoir un fichier d'entête et un fichier source
-- Pour ne plus avoir de flottant dans la fonction `receive` et faire la convertion en utilisant que des entiers pour diminuer la charge CPU et du coup retourner une valeur en mm
-- Ajouter en paramètre du constructeur le groupIp pour le membre _capTimer(mcpwmGroupId)
-- Modifier la queue _rspQueue pour ne considérer que la valeur la plus récente
+- Éviter l'utilisation de types flottants dans la fonction `receive` et faire la conversion en
+utilisant uniquement des entiers pour diminuer la charge CPU et du coup retourner une valeur en mm
+- Ajouter en paramètre du constructeur le `groupIp` pour le membre `_capTimer(mcpwmGroupId)`
+- Modifier la queue `_rspQueue` pour ne considérer que la valeur la plus récente
 
-Ensuite, dans le thread du telemetre ultrason, vous devrez remplacer le log sur le port série par l'envoi de la notification `ultrasoundDistanceDetected` vers le client en uilisant la fonction `sendNotification()` du server Json RCP avec les paramètres :
+Ensuite, dans le thread du télémètre ultrason, vous devrez remplacer le log sur le port série par
+l'envoi de la notification `ultrasoundDistanceDetected` vers le client en utilisant la fonction
+`sendNotification()` du serveur Json RCP avec les paramètres :
 
-- `index` : valeur entiere du numéro du capteur en commençant par 0 (donc ici toujours 0)
-- `value` : valeur entiere mesurée par le capteur (en mm)
-- `changedCount` : valeur entiere auto incrementée, pour que le client vérifie s'il n'y a pas eu de message raté
+- `index` : valeur entière du numéro du capteur en commençant par 0 (donc ici toujours 0)
+- `value` : valeur entière mesurée par le capteur (en mm)
+- `changedCount` : valeur entière auto-incrémentée, afin que le client puisse vérifier si des
+messages ont été perdus
 
-Ajout des interrupteurs
-=======================
+Etape 2 : Ajout des interrupteurs
+---------------------------------
 
-Ajout du télémètre IR
-=====================
+En vous inspirant de l'étape 6 du TP2, vous devrez envoyer le message `switchIsDetected` en Json
+avec les valeurs suivantes :
+
+- `index` : l'index du capteur, ici 0 pour droite et 1 pour gauche.
+- `value` : un booléen à vrai si l'interrupteur est enfoncé et faux sinon.
+- `changedCount` : valeur entière auto incrémentée à chaque message.
+
+Attention : Il faudra ajouter un anti-rebond logiciel (debouncing) pour envoyer un seul message à
+chaque changement d'état.
+
+Etape 3 : Ajout du télémètre IR
+-------------------------------
+
+Sur le robot, il faut déconnecter le capteur de suivi de ligne et brancher à la place le télémètre
+IR. Vous devrez envoyer le message `irProximityDistanceDetected` en Json avec les valeurs
+suivantes :
+
+- `index` : l'index du capteur, ici 0
+- `value` : valeur entière mesurée par le capteur (en mm)
+- `changedCount` : valeur entière auto incrémentée à chaque message.
+
+Il faudra créer une fonction de conversion de la lecture analogique brute vers la distance en mm,
+en établissant une table de correspondance (Lookup Table) en mesurant au moins une dizaine de
+points, puis, à partir de cette table faire une interpolation linéaire pour retourner une estimation
+de la distance mesurée en mm.
 
 Test final
-==========
+----------
 
-Sur le projet robot-command (utilisé par votre binôme) il y a une branche pour contrôler le robot au clavier avec affichage de l'ultrason. Voici les commandes pour le récupérer et vous avez dans le README.md les instructions pour le compiler.
-```
-   git clone git@gitlab.cri.epita.fr:jeremie.graulle/ssie-s9-robot-command.git
-   git checkout robotKeyboard
-```
-Vous devrez le lancer en ajoutant en 1er argument l'IP de l'ESP32 et en 2ème argument le port TCP de votre serveur Json RCP.
-Il y aura une petite démo à faire avec le contrôle clavier et affichage du télémètre.
+Avec l'aide de votre binôme vous devrez tester le programme d'asservissement en PID de la distance
+du robot à l'obstacle détecté par le télémètre ultrason ou télémètre IR. Ajoutez les interrupteurs
+droite et gauche pour augmenter ou diminuer la distance cible par pas de 5cm.

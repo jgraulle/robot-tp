@@ -24,8 +24,19 @@ au clavier et visualiser les données renvoyées par les capteurs en utilisant l
        git checkout tp3-motorKeyboardAllSensors
     ```
 
+Etape 1 : Ajout de l'autre commande moteur
+------------------------------------------
 
-Etape 1 : Ajout du télémètre ultrason
+Le but de cette étape est d'ajouter la réception du message Json RCP `setMotorPower` contenant les
+paramètres :
+
+- `motorIndex` : avec comme valeur une string `"LEFT"` ou `"RIGHT"`
+- `value`: avec comme valeur un float entre -1.0 et 1.0:
+
+Il faut donc modifier le type de message contenue dans la file de message pour supporter les 2
+formats de la commande.
+
+Etape 2 : Ajout du télémètre ultrason
 -------------------------------------
 
 En vous inspirant de l'exemple `esp-idf-cxx/examples/hc_sr04_cxx` vous devrez ajouter le télémètre
@@ -36,11 +47,13 @@ temps, la loggant sur le port série (pour la voir sur la sortie `monitor`).
 
 Vous devrez modifier la classe HcSr04 pour :
 
-- Avoir un fichier d'entête et un fichier source
+- Avoir un fichier d'entête et un fichier source.
 - Éviter l'utilisation de types flottants dans la fonction `receive` et faire la conversion en
-utilisant uniquement des entiers pour diminuer la charge CPU et du coup retourner une valeur en mm
-- Ajouter en paramètre du constructeur le `groupIp` pour le membre `_capTimer(mcpwmGroupId)`
-- Modifier la queue `_rspQueue` pour ne considérer que la valeur la plus récente
+utilisant uniquement des entiers de 32 bits pour diminuer la charge CPU et du coup retourner une
+valeur en mm.
+- Ajouter en paramètre du constructeur le `groupIp` pour le membre `_capTimer(mcpwmGroupId)`.
+- Modifier la queue `_rspQueue` pour ne considérer que la valeur la plus récente.
+- Ajouter la Doxygen sur le header de la classe.
 
 Ensuite, dans le thread du télémètre ultrason, vous devrez remplacer le log sur le port série par
 l'envoi de la notification `ultrasoundDistanceDetected` vers le client en utilisant la fonction
@@ -51,7 +64,14 @@ l'envoi de la notification `ultrasoundDistanceDetected` vers le client en utilis
 - `changedCount` : valeur entière auto-incrémentée, afin que le client puisse vérifier si des
 messages ont été perdus
 
-Etape 2 : Ajout des interrupteurs
+Attentions:
+
+- Pour les tests le plafond n'est pas une bonne surface réfléchissante pour les ultrasons
+on a des valeurs incohérentes, il vaut mieux le tester sur les murs ou le sol.
+- `Us` dans le nom de la variable veut dire micro-seconde il faut donc changer le nom de la
+variable si vous changez l'unité.
+
+Etape 3 : Ajout des interrupteurs
 ---------------------------------
 
 En vous inspirant de l'étape 6 du TP2, vous devrez envoyer le message `switchIsDetected` en Json
@@ -64,7 +84,7 @@ avec les valeurs suivantes :
 Attention : Il faudra ajouter un anti-rebond logiciel (debouncing) pour envoyer un seul message à
 chaque changement d'état.
 
-Etape 3 : Ajout du télémètre IR
+Etape 4 : Ajout du télémètre IR
 -------------------------------
 
 Sur le robot, il faut déconnecter le capteur de suivi de ligne et brancher à la place le télémètre
@@ -78,7 +98,8 @@ suivantes :
 Il faudra créer une fonction de conversion de la lecture analogique brute vers la distance en mm,
 en établissant une table de correspondance (Lookup Table) en mesurant au moins une dizaine de
 points, puis, à partir de cette table faire une interpolation linéaire pour retourner une estimation
-de la distance mesurée en mm.
+de la distance mesurée en mm. De plus comme toutes les données sont connues à la compilation cette
+fonction devra etre `constexpr`.
 
 Test final
 ----------

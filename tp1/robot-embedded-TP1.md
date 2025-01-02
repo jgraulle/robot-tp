@@ -5,12 +5,22 @@ Setup
 =====
 
 - For Windows only:
-  - from https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads download CP210x_Universal_Windows_Driver.zip
+  - from https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers?tab=downloads download
+    CP210x_Universal_Windows_Driver.zip
   - Unzip this file, right clic on "silabser.inf" then "Install"
-  - Do not forget to follow "epitaGitlabSshKey.pdf" and execute `git clone git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx.git` from a git console
+  - Do not forget to follow "epitaGitlabSshKey.pdf" and execute
+
+    `git clone git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx.git` from a git console
 - For Personal Linux (not Epita computer):
-  - VS code installation: (add PPA and install from https://doc.ubuntu-fr.org/visual_studio_code#via_ppa_de_microsoft or manual download from https://code.visualstudio.com/download and install)
-  - To have access to the USB: `echo -e '# CP210X USB UART\nATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", MODE:="0666", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_PORT_IGNORE}="1"' | sudo tee /etc/udev/rules.d/97-cp210x.rules`
+  - VS code installation: (add PPA and install from
+
+    https://doc.ubuntu-fr.org/visual_studio_code#via_ppa_de_microsoft or manual download from https://code.visualstudio.com/download and install)
+  - To have access to the USB:
+    ```
+      echo -e '# CP210X USB UART\nATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ' \
+        'MODE:="0666", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{ID_MM_PORT_IGNORE}="1"' \
+        | sudo tee /etc/udev/rules.d/97-cp210x.rules
+    ```
 - Run Visual Studio Code
 - In menu "View" option "Extensions", search and install the extension `Espressif IDF`
 - In menu "View" option "Command Palette", type and select `ESP-IDF: Configure ESP-IDF extension`.

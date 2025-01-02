@@ -17,6 +17,16 @@ asservissement de la position du robot par rapport à une distance mesurée par 
 
 Vous trouverez une explication du PID sur la page [Wikipédia](https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller).
 
+Vocabulaire utilisé :
+- `current` (courant) : valeur courant que l'on a mesurée, ici la distance au premier
+  obstacle mesuré par le capteur ultrason.
+- `target` (cible) : valeur que l'on cherche a atteindre, ici également la distance au premier
+  obstacle donné par le programme.
+- `command` (commande) : valeur permettant d'agir sur le système, ici la puissance appliquée aux
+  moteurs.
+- `error` (erreur) : la différence entre la valeur courant et la valeur cible.
+- `dt` (delta time) : temps écoulé depuis le dernier calcul d'asservissement.
+
 Vous devrez créer une classe dédiée pour le PID, en suivant l'exemple d'en-tête suivant :
 ```
     class PidController
@@ -57,6 +67,9 @@ Vous devez :
 - Ajouter des commentaires décrivant les étapes principales
 - Ajouter des commentaires au format Doxygen à la classe PID
 - Ajouter au moins 1 changement de valeur cible après x secondes
+- Les fonctions de la classe PID doit être robuste (protéger contre les paramètres invalides)
+- Dans la fonction update vous devrez ajouter en commentaire les principales étapes
+- Utiliser des vrais constantes pour les constantes littérales
 - Ajouter dans le git les courbes au format Excel, OpenOffice, SVG, PNG ou PDF (peut-être un format
 Excel ou LibreOffice en plus d'un format SVG, PNG ou PDF serait l'idéal dans le cas où je n'arrive
 pas bien à ouvrir le fichier Excel ou LibreOffice). Pour chaque courbe :

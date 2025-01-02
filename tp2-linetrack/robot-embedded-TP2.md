@@ -148,17 +148,14 @@ Etape 4 : Ajout du contrôle des moteurs
 ---------------------------------------
 
 Le but de cette étape est de traiter la réception des messages Json RCP de commande de puissance
-des moteurs. Les messages à traiter sont les suivants :
+des moteurs `setMotorsPower` contenant les paramètres :
 
-- `setMotorPower` contenant les paramètres :
-    - `motorIndex` : avec comme valeur une string `"LEFT"` ou `"RIGHT"`
-    - `value`: avec comme valeur un float entre -1.0 et 1.0
-- `setMotorsPower` contenant les paramètres :
-    - `leftValue` : avec comme valeur un float entre -1.0 et 1.0
-    - `rightValue`: avec comme valeur un float entre -1.0 et 1.0
+- `leftValue` : avec comme valeur un float entre -1.0 et 1.0
+- `rightValue`: avec comme valeur un float entre -1.0 et 1.0
 
 Il faut utiliser la fonction `bindNotification` de la classe `JsonRpcTcpServer` qui s'utilise un
 peu comme la méthode `bindOnConnectSendNotification` de l'étape 3 avec en argument :
+
 - Le nom de la méthode du message que vous voulez associer
 - La fonction (qui peut être une lambda) permettant de traiter ce message. Dans cette fonction vous
 devez avoir en paramètre les paramètres du message Json (décrit au début de cette étape).
@@ -166,7 +163,8 @@ devez avoir en paramètre les paramètres du message Json (décrit au début de 
 Attention vous ne pouvez pas modifier la vitesse du moteur directement dans la lamda du
 `bindNotification` car il y a des problèmes de contrainte de temps réel (le module réseau de
 l'ESP32 lève une erreur si on ne rend pas la main rapidement). Vous devrez donc utiliser la classe
-`idf::Queue` pour vous poster un message et le traiter dans un thread dédié au contrôle des moteurs.
+`idf::Queue` pour vous poster un message (en utilisant une version de la fonction send qui ne bloque
+pas) et le traiter dans un thread dédié au contrôle des moteurs.
 
 Sur le projet `robot-command` (utilisé par votre binôme) il y a une branche pour contrôler le robot
 au clavier. Voici les commandes pour le récupérer et vous avez dans le `README.md` les instructions
@@ -190,8 +188,8 @@ robot-command :
    référence ou un pointeur) et pareil pour la passer dans le thread.
 3. Vous convertirez cette variable en une "idf::Queue" en postant un message de type int depuis la
    lambda et en le lisant et en l'affichant dans le thread.
-4. Vous changerez le type de message pour contenir suffisamment d'informations pour traiter les
-   commandes `setMotorPower` et `setMotorsPower` avec leurs paramètres (il vaut mieux éviter de
+4. Vous changerez le type de message pour contenir suffisamment d'informations pour traiter la
+   commande `setMotorsPower` avec leurs paramètres (il vaut mieux éviter de
    copier la partie Json mais plutôt de la convertir) et vous afficherez ces informations dans le
    thread de réception.
 5. Vous ajouterez en plus de l'affichage l'envoi de la commande aux moteurs.
@@ -200,12 +198,17 @@ Etape 5 : Ajout du capteur suiveur de ligne
 -------------------------------------------
 
 A l'aide de la fonction `JsonRpcTcpServer::sendNotification` vous devrez, depuis un thread dédié,
-envoyer toutes les 100ms, le message `lineTrackValue` avec la valeur brute lu par l'ADC du capteur
-suiveur de ligne en json avec les valeurs :
+envoyer toutes les 100ms, envoyer les 2 messages du capteur de suivi de ligne :
 
-- `index` : l'index du capteur, ici un seul capteur donc toujours 0.
-- `value` : valeur brute lu par le capteur de 0 à 255.
-- `changedCount` : un entier qui s'auto-incrémente à chaque message.
+- `lineTrackValue` avec les valeurs :
+  - `index` : l'index du capteur, ici un seul capteur donc toujours 0.
+  - `value` : valeur brute lu par le capteur de 0 à 255.
+  - `changedCount` : un entier qui s'auto-incrémente à chaque message.
+- `lineTrackIsDetected` avec les valeurs :
+  - `index` : l'index du capteur, ici un seul capteur donc toujours 0.
+  - `value` : booléen vrai si la ligne est détecté et faux si non détecté (ajout du seuil en
+    constante).
+  - `changedCount` : un entier qui s'auto-incrémente à chaque message.
 
 Attention :
 

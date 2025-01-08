@@ -24,9 +24,9 @@ Setup
 - Run Visual Studio Code
 - In menu "View" option "Extensions", search and install the extension `Espressif IDF`
 - In menu "View" option "Command Palette", type and select `ESP-IDF: Configure ESP-IDF extension`.
-- Select `Global` for "Select where to save these settings:"
 - Choose `Express`
-- Select `v5.1.1 (release version)` in "Select ESP-IDF version:"
+- Leave `Github` in "Select download server"
+- Select `v5.4 (release version)` in "Select ESP-IDF version:"
 - Leave `/home/<user>/esp` in "Enter ESP-IDF container directory"
 - Leave `/home/<user>/.espressif` in "Enter ESP-IDF Tools directory (IDF_TOOLS_PATH)"
 - Leave `/usr/bin/python3` in "Select Python version:"

@@ -1,31 +1,11 @@
-Robot - Embarqué : TP2
-======================
+Robot - TP4 - Embarqué - Suiveur de ligne
+=========================================
 
 Installation
 ------------
 
-Vous devrez finir de monter le robot avant la séance car on va avoir besoin de le faire rouler
-dans ce TP.
-
-Attention :
-
-- Comme j'ai pris la peine d'imprimer un robot de chaque couleur, je tiens à ce que chaque couleur
-  soit respectée.
-- Pour le branchement des connecteurs il faudra respecter les connexions suivantes :
-  - Suiveur de ligne : GPIO39
-  - Télémètre ultrason : GPIO22 et GPIO23
-  - Encodeur droit : GPIO18
-  - Encodeur gauche : GPIO26
-  - Interrupteur droit : GPIO21
-  - Interrupteur gauche : GPIO32
-  - Moteur droit : GPIO4 et GPIO2, M2 (avec les fils du moteur orientés vers le centre du robot)
-  - Moteur gauche : GPIO12 et GPIO13, M1 (avec les fils du moteur orientés vers le centre du robot)
-
-Vous devrez avoir une branche `tp2` à jour avec le nouveau `esp-idf-cxx` :
-
-- Mergez la branche `tp1` dans la branche `main`
+- Mergez la branche `tp3` dans la branche `main` et créez une branche `tp4`
 - Dans le fichier `idf_component.yml` :
-  - Dans `esp-idf-cxx-tp1.git` enlevez `-tp1` pour avoir `esp-idf-cxx.git`
   - Dans le fichier `idf_component.yml`, vous devrez ajouter les dépendances suivantes :
     ```
       espressif/asio: "*"
@@ -62,7 +42,6 @@ Vous devrez avoir une branche `tp2` à jour avec le nouveau `esp-idf-cxx` :
 - Lancez un build
 - Vérifiez votre `.gitignore`
 - Commitez cet état dans la branche `main` et poussez le sur le gitlab.
-- Créez une branche `tp2` à partir de la branche `main` pour commiter les étapes suivantes.
 
 Commun
 ------
@@ -75,22 +54,7 @@ source qu'il vous semble utile. De plus, si vous voulez créer des classes conte
 non copiables (copy constructor et operator en delete) pensez que la copie de valeur n'est pas le
 seul moyen de copier un objet en C++.
 
-Etape 1 : Monitoring de la batterie
------------------------------------
-
-Dans le thread de monitoring de la batterie, faire une sonnerie brève (100ms) si la tension est
-en dessous de 7V (vous avez un exemple de sonnerie dans le dossier
-
-`managed_components/esp-idf-cxx/examples/ledc_cxx/main/main.cpp`).
-
-Utilisez un son assez grave, pour limiter les nuisances pendant le TP. Dans le cas où la carte est
-alimentée en USB C vous ne devrez pas faire sonner le buzzer. Si j'ai le temps, je passerai avec
-une petite alimentation pour simuler la batterie faible pour vérifier que ça fonctionne.
-
-Je vous demanderai de toujours avoir ce code dans tous vos projets pour protéger les batteries des
-décharges profondes.
-
-Etape 2 : Moteur électrique
+Etape 1 : Moteur électrique
 ---------------------------
 
 En utilisant la classe idf::BdcMotor avec comme paramètres :
@@ -104,7 +68,7 @@ Faire :
 - Puis tourner le robot sur lui-même dans le sens des aiguilles d'une montre à 25%
 
 
-Etape 3 : Serveur Json RCP TCP en Wifi
+Etape 2 : Serveur Json RCP TCP en Wifi
 --------------------------------------
 
 1. En vous inspirant de l'exemple `esp-idf-cxx/examples/wifi_cxx` vous devrez au début du programme
@@ -144,7 +108,7 @@ activer le Wifi pour pouvoir établir une connexion TCP/IP entre l'ESP et votre 
     ```
 
 
-Etape 4 : Ajout du contrôle des moteurs
+Etape 3 : Ajout du contrôle des moteurs
 ---------------------------------------
 
 Le but de cette étape est de traiter la réception des messages Json RCP de commande de puissance
@@ -194,7 +158,7 @@ robot-command :
    thread de réception.
 5. Vous ajouterez en plus de l'affichage l'envoi de la commande aux moteurs.
 
-Etape 5 : Ajout du capteur suiveur de ligne
+Etape 4 : Ajout du capteur suiveur de ligne
 -------------------------------------------
 
 A l'aide de la fonction `JsonRpcTcpServer::sendNotification` vous devrez, depuis un thread dédié,
@@ -230,7 +194,7 @@ Attention :
 Vous devrez tester avec votre binôme, le contrôle de votre robot à l'aide du programme
 `robot-command` de l'étape 1.
 
-Etape 6 : Ajout des capteurs roues codeuses
+Etape 5 : Ajout des capteurs roues codeuses
 -------------------------------------------
 
 A l'aide de la fonction `JsonRpcTcpServer::sendNotification` vous devrez, depuis un thread dédié,

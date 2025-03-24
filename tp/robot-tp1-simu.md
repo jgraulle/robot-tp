@@ -1,11 +1,11 @@
-Robot - Simu et commande : TP1
-==============================
+Robot - TP1 - Simu
+==================
 
 Installation
 ------------
 
-Depuis https://gitlab.cri.epita.fr/jeremie.graulle/ssie-robot-simulator-tp1 créez un "fork"
-personnel privé renommé "ssie-robot-simulator".
+Depuis https://gitlab.cri.epita.fr/jeremie.graulle/ssie-robot-simulator créez un "fork" personnel
+privé.
 
 Ajoutez votre binome et "jeremie.graulle" en "maintainer".
 

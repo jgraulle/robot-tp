@@ -1,27 +1,20 @@
-Robot - Simu et commande : TP2
-==============================
+Robot - TP2 - Commande - Suiveur de ligne
+=========================================
 
 Installation
 ------------
+
+Téléchargez et décompressez le fichier robot-simulator-bin.tar.gz contenant une version compilé du
+de la solution du TP simu.
 
 Depuis https://gitlab.cri.epita.fr/jeremie.graulle/ssie-robot-command créez un "fork" personnel
 privé.
 
 Ajoutez votre binôme et "jeremie.graulle" en "maintainer".
 
-Clonez ce projet sur votre ordinateur et compilez le.
-
-Sur le projet simu, modifiez la branche main de votre projet avec la correction :
-
-- Sur votre projet simu ajoutez en remote la correction du tp1
-
-  `git remote add teacher git@gitlab.cri.epita.fr:jeremie.graulle/ssie-robot-simulator.git`
-- Allez sur la branche main : `git checkout main`
-- Modifiez la branche main pour être identique à la correction : `git reset --hard teacher/main`
-- Recupérez les branches : `git fetch teacher`
-
-Compilez le simu puis lancez-le, ensuite lancez le robot-command, vous devrez voir le robot du simu
-se déplacer en suivant l'algorithme du robot-command.
+Clonez ce projet sur votre ordinateur et compilez le ensuite lancez le robot-simu suivi du
+robot-command, vous devrez voir le robot du simu se déplacer en suivant l'algorithme naïf du
+robot-command.
 
 Etape 1
 -------
@@ -56,7 +49,7 @@ Etape 2
     #endif
   ```
 
-1. En vous inspirant de la branche `tp2-motorKeyboard`, en plus de faire le suivi de ligne de
+1. En vous inspirant de la branche `motorKeyboard`, en plus de faire le suivi de ligne de
 l'étape 1, ajoutez une fenêtre SFML pour pouvoir dessiner.
 
     Attention :

@@ -1,5 +1,5 @@
-Robot - Embedded: TP1
-=====================
+Robot - TP3 - Embarqué - ADC
+============================
 
 Setup
 =====
@@ -33,8 +33,8 @@ Setup
 - Clic on `install`
 - Search and install the extension `C/C++ Extension Pack`
 
-1. First C Project example
-==========================
+1. First C Project example (optionnal)
+======================================
 
 Purpose: To be able to import an ESP-IDF example, build, flash and see debug message.
 
@@ -60,8 +60,8 @@ Step 1.2
 - Update the period by menuconfig
 - Open the main.c and updated period directly in C source
 
-2. First C++ Project example
-============================
+2. First C++ Project example (optionnal)
+========================================
 
 Purpose: To be able to import an ESP-IDF module example and use C++ instead of C.
 Definition: a ESP-IDF module is an external lib can be easilly add to a ESP-IDF project.
@@ -111,8 +111,8 @@ Step 3.1
 - On popup "Project robot-esp-idf has been created. Open project in a new window?" Clic `Yes`
 - From `blink_cxx` copy file `main/idf_component.yml` and `main/main.cpp`
 - in `main/idf_component.yml`:
-  - remplace `espressif/esp-idf-cxx:` by `jgraulle/esp-idf-cxx-tp1:`
-  - remplace `version: 1.0.1-beta` by `git: git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx-tp1.git`
+  - remplace `espressif/esp-idf-cxx:` by `jgraulle/esp-idf-cxx:`
+  - remplace `version: 1.0.1-beta` by `git: git@gitlab.cri.epita.fr:jeremie.graulle/esp-idf-cxx.git`
   - remove `pre_release: true`
 - remove `main/main.c` and in `main/CMakeLists.txt` replace `main.c` by `main.cpp`
 - Do the same menuconfig as `blink_cxx`
@@ -139,7 +139,7 @@ Step 3.2
 Step 4.1
 --------
 
-- Download robot-embedded-TP1-adc-header.tar.gz and extract into the project created in previous
+- Download robot-tp3-embedded-adc-header.tar.gz and extract into the project created in previous
 step "First new C++ Project" next to "main.cpp".
 - Create a new C++ body C++ file adc_cxx.cpp and add stub (empty body function) for
 each header function to make it compile again (do not forget to add body in CMakeLists.txt)
@@ -147,16 +147,34 @@ each header function to make it compile again (do not forget to add body in CMak
 Step 4.2
 --------
 
-- Create a `tp1` branche to commit this step
+- Create a `tp3` branche to commit this step
 - From official SDK help: https://docs.espressif.com/projects/esp-idf
-- Select the stable version (v5.1.1)
+- Select the stable version (v5.4)
 - Goto "API Reference" and look for ADC
 - Update file adc_cxx.cpp and adc_cxx.hpp to have reel implementation. You can have a look in other
-hardware C++ class in `jgraulle/esp-idf-cxx-tp1:` (include/gptimer_cxx.hpp,
+hardware C++ class in `jgraulle/esp-idf-cxx:` (include/gptimer_cxx.hpp,
 include/pulse_counter_cxx.hpp) to have the same behavior (use CHECK_THROW to convert return code
 to exception).
 - Update main to add a new thread, in this thread you will read battery voltage every seconds and
 print it into serial console (use ADC on GPIO 36).
-- Commit and push your modifications
-- Create a merge request from tp1 branch to main.
+
+Step 4.3
+--------
+
+In addition to logging the voltage, a brief beep (100ms) should be made using the buzzer if the
+voltage is below 7V (you have an example of a beep in the folder
+`managed_components/esp-idf-cxx/examples/ledc_cxx/main/main.cpp`).
+
+Use a relatively low-pitched sound to limit disturbances during the lab. If the board is powered
+via USB-C, you should not activate the buzzer. To validate this step, you will need to call me so
+that I can come and test your algorithm by simulating a discharged battery.
+
+I will ask you to always include this code in all your projects to protect batteries from deep
+discharges.
+
+Step 4.4
+--------
+
+- Move the battery management to a dedicated thread by adding a `while(true)` in the main loop.
+- Create a merge request from `tp3` branch to main.
 - Add jeremie.graulle as reviewer of this MR

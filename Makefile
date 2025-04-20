@@ -16,7 +16,7 @@ all : $(BUILDDIR)/robot-git.pdf \
 $(BUILDDIR)/%.pdf : %.md | $(BUILDDIR)
 	pandoc -V geometry:margin=2cm -o $@ -t latex $<
 
-$(BUILDDIR)/%.pdf : tp/%.md | $(BUILDDIR)
+$(BUILDDIR)/%.pdf : tp/%.md tp/%* | $(BUILDDIR)
 	pandoc -V geometry:margin=2cm -o $@ -t latex $<
 
 $(BUILDDIR)/%.tar.gz: tp/%.tar.gz | $(BUILDDIR)

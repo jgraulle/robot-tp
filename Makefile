@@ -7,6 +7,7 @@ all : $(BUILDDIR)/robot-git.pdf \
 	$(BUILDDIR)/robot-tp2-command-linetrack.pdf \
 	$(BUILDDIR)/robot-tp2-command-linetrack-simulator-docker-bin.tar.gz \
 	$(BUILDDIR)/robot-tp2-command-linetrack-simulator-windows-bin.zip \
+	$(BUILDDIR)/robot-tp2-command-linetrack-simulator-NixOs-PIE-bin.tar.gz \
 	$(BUILDDIR)/robot-tp3-embedded-adc.pdf \
 	$(BUILDDIR)/robot-tp3-embedded-adc-header.tar.gz \
 	$(BUILDDIR)/robot-tp4-embedded-linetrack.pdf \

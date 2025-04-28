@@ -52,6 +52,28 @@ If you prefered you can execute all command from console simply run
 - `idf.py flash`
 - `idf.py monitor` (To exit IDF monitor use the shortcut `Ctrl+]`)
 
+Robot power supply
+==================
+
+There are 3 ways to power the ESP32:
+
+- Through the USB C port of the ESP32: in this case, the robot board is not powered, only the ESP32
+  is functional (no LED, no ADC, no buzzer, no external sensors or actuators, etc.), but it is the
+  only way to get debug information (text sent to stdout). Therefore, it must be used in addition
+  to a second power supply method.
+- Through the USB C port of the robot board: disconnect the battery if it is connected, then
+  position the large metal switch towards the USB C port, and then connect the USB C cable to the
+  robot board: almost everything is powered except the power to the H-bridge (the motors) and the
+  voltage read by the battery's ADC, which, since there is no battery connected, is floating and at
+  best at 0V.
+- Through the battery: disconnect the USB cable from robot board if it is connected, position the
+  large metal switch towards the edge of the board, also position the small red switch towards the
+  edge of the board to deactivate the motors (H-bridge), and then connect the battery cable: all
+  components of the robot board and external sensors/actuators are powered except the motors
+  (H-bridge). For the TP4, once the robot is on the ground, you can position the red switch towards
+  the ESP32 to activate the motors and thus make the robot roll.
+
+
 1. First C Project example (optionnal)
 ======================================
 

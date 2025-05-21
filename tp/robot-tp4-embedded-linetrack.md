@@ -36,7 +36,8 @@ Installation
 - Ouvrez VS code et lancez un `menuconfig` (>ESP-IDF: SDK configuration editor (menuconfig) ou icône
   roue crantée) :
   - Remettez les 3 paramètres du premier TP (4MB, C++ exception et C++ RTTI)
-  - Ajoutez les valeurs des paramètres Wifi suivant le mode de connexion (voir partie 3.2)
+  - Ajoutez les valeurs des paramètres Wifi suivant le mode de connexion (`ESP_WIFI_SSID`
+    et `ESP_WIFI_PASSWORD`)
   - Mettez la valeur `Single factory app(large), no OTA` pour le champ `Partition Table`. Sinon
     vous aurez une erreur de taille de binaire trop grande pour la partition principale.
 - Lancez un build
@@ -118,7 +119,7 @@ des moteurs `setMotorsPower` contenant les paramètres :
 - `rightValue`: avec comme valeur un float entre -1.0 et 1.0
 
 Il faut utiliser la fonction `bindNotification` de la classe `JsonRpcTcpServer` qui s'utilise un
-peu comme la méthode `bindOnConnectSendNotification` de l'étape 3 avec en argument :
+peu comme la méthode `bindOnConnectSendNotification` de l'étape 2 avec en argument :
 
 - Le nom de la méthode du message que vous voulez associer
 - La fonction (qui peut être une lambda) permettant de traiter ce message. Dans cette fonction vous
@@ -191,8 +192,8 @@ Attention :
   l'opérateur d'affectation sont marqués "delete") il faudra les passer par référence et non par
   valeur et donc utiliser "std::ref()" dans les paramètres de la création des threads.
 
-Vous devrez tester avec votre binôme, le contrôle de votre robot à l'aide du programme
-`robot-command` de l'étape 1.
+Vous devrez tester le contrôle de votre robot à l'aide du programme `robot-command` de l'étape 1 du
+TP2.
 
 Etape 5 : Ajout des capteurs roues codeuses
 -------------------------------------------
@@ -208,5 +209,5 @@ envoyer à chaque passage d'une fente de la roue codeuse en créant une interrup
 Attention : comme pour l'étape 4, vous ne devrez pas envoyer le message json depuis l'interruption
 pour ne pas avoir des erreurs de temps réel, mais vous devrez passer par une file de message `idf::Queue`.
 
-Vous devrez tester avec votre binôme, le contrôle de votre robot à l'aide du programme
-`robot-command` de l'étape 2.
+Vous devrez tester le contrôle de votre robot à l'aide du programme `robot-command` de l'étape 2
+du TP2.

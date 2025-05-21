@@ -86,4 +86,4 @@ Il faudra créer une fonction de conversion de la lecture analogique brute vers 
 en établissant une table de correspondance (Lookup Table) en mesurant au moins une dizaine de
 points, puis, à partir de cette table faire une interpolation linéaire pour retourner une estimation
 de la distance mesurée en mm. De plus comme toutes les données sont connues à la compilation cette
-fonction devra etre `constexpr`.
+fonction devra être `constexpr`.

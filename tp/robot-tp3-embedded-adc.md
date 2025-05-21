@@ -211,7 +211,7 @@ Step 4.2
 - Create a `tp3` branche to commit this step
 - From official SDK help: https://docs.espressif.com/projects/esp-idf
 - Select the stable version (v5.4)
-- Goto `API Reference` and look for ADC
+- Goto `API Reference` and look for ADC, warning you have to choose the good one
 - Update file adc_cxx.cpp and adc_cxx.hpp to have reel implementation. You can have a look in other
 hardware C++ class in `jgraulle/esp-idf-cxx:` (include/gptimer_cxx.hpp,
 include/pulse_counter_cxx.hpp) to have the same behavior (use CHECK_THROW to convert return code
